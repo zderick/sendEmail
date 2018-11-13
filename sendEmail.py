@@ -16,25 +16,33 @@ from email.header import Header
 from email.MIMEText import MIMEText
 from email.utils import formataddr
  
-fromaddr = "lynlynlynt@gmail.com"
+ 
+#Enter email information
+fromaddr = "yourEmail@gmail.com"
+password = "password"
 toaddr = ['to@gmail.com']
 fakeCcList = ['fakecc@gmail.com']
 bccList = ['bcc@gmail.com']
-msg = MIMEMultipart()
+displayName = 'First Last'
 
-msg['From'] = formataddr((str(Header('First Last', 'utf-8')), fromaddr))
+
+msg = MIMEMultipart()
+msg['From'] = formataddr((str(Header(displayName, 'utf-8')), fromaddr))
+
+
+#Edit subject, message, and reply-to information here
+msg['Subject'] = "Subject"
+body = "Message"
+msg.add_header('reply-to', "replyto@gmail.com")
+
+
 msg['To'] = ",".join(toaddr)
 msg['Cc'] = ",".join(fakeCcList)
-msg['Subject'] = "Subject"
-msg.add_header('reply-to', "replyto@gmail.com")
- 
-body = "Message"
 msg.attach(MIMEText(body, 'plain'))
-
 
 server = smtplib.SMTP('smtp.gmail.com', 587)
 server.starttls()
-server.login(fromaddr, "password")
+server.login(fromaddr, password)
 text = msg.as_string()
 server.sendmail(fromaddr, bccList + toaddr, text)
 server.quit()
